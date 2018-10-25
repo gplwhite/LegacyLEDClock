@@ -6,9 +6,14 @@ namespace Clock4Windows.ViewModels
     public class DeviceViewModel : PropertyChangedBase
     {
 
-        private ClockConnection _deviceConnection;
+        private readonly ClockConnection _deviceConnection;
         private ClockViewModel _assignedClock;
 
+        #region Construction
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceViewModel"/> class.
+        /// </summary>
         public DeviceViewModel()
         {
             _deviceConnection = new ClockConnection();
@@ -24,6 +29,8 @@ namespace Clock4Windows.ViewModels
             AvailablePorts.Add("COM8");
             AvailablePorts.Add("COM9");
         }
+
+        #endregion
 
 
         private string _deviceName;
@@ -46,11 +53,11 @@ namespace Clock4Windows.ViewModels
             }
         }
 
-        public IObservableCollection<string> AvailablePorts { get; private set; }
+        public IObservableCollection<string> AvailablePorts { get; }
 
 
 
-        public string _clockName;
+        private string _clockName;
         public string ClockName
         {
             get => _clockName;
@@ -78,13 +85,7 @@ namespace Clock4Windows.ViewModels
 
 
 
-        public bool CanConnectOrDisconnect
-        {
-            get
-            {
-                return Status != DeviceStatus.Connecting && !string.IsNullOrEmpty(PortName);
-            }
-        }
+        public bool CanConnectOrDisconnect => Status != DeviceStatus.Connecting && !string.IsNullOrEmpty(PortName);
 
         public void ConnectOrDisconnect()
         {

@@ -8,11 +8,17 @@ namespace Clock4Windows.ViewModels
     public class ClockViewModel : PropertyChangedBase
     {
 
+        private const int UpdateTimerIntervalMs = 200;
         private Timer _updateTimer;
 
 
         public ClockState Clock { get; }
 
+        #region Construction
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClockViewModel"/> class.
+        /// </summary>
         public ClockViewModel()
         {
             Clock = new ClockState();
@@ -32,6 +38,7 @@ namespace Clock4Windows.ViewModels
             StartStopUpdateTimer();
         }
 
+        #endregion
 
         private string _clockName;
         public string ClockName
@@ -302,13 +309,13 @@ namespace Clock4Windows.ViewModels
             if (timerShouldBeRunning)
             {
                 if (_updateTimer == null)
-                    _updateTimer = new Timer(UpdateTimer_Elapsed, null, 0, 200);
+                    _updateTimer = new Timer(UpdateTimer_Elapsed, null, 0, UpdateTimerIntervalMs);
             }
             else
             {
                 if (_updateTimer != null)
                 {
-                    _updateTimer.Change(Timeout.Infinite, 200);
+                    _updateTimer.Change(Timeout.Infinite, UpdateTimerIntervalMs);
                     _updateTimer.Dispose();
                     _updateTimer = null;
                 }

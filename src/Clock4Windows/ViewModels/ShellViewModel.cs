@@ -15,6 +15,7 @@ namespace Clock4Windows.ViewModels
             set { _selectedDevice = value; NotifyOfPropertyChange(nameof(SelectedDevice)); }
         }
 
+        #region Construction
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
@@ -42,6 +43,7 @@ namespace Clock4Windows.ViewModels
             });
         }
 
+        #endregion
 
 
         public void AddClock()
