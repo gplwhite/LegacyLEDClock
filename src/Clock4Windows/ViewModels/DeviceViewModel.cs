@@ -5,6 +5,7 @@ namespace Clock4Windows.ViewModels
 {
     public class DeviceViewModel : PropertyChangedBase
     {
+        private readonly PortManager _portManager;
 
         private readonly ClockConnection _deviceConnection;
         private ClockViewModel _assignedClock;
@@ -14,8 +15,9 @@ namespace Clock4Windows.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceViewModel"/> class.
         /// </summary>
-        public DeviceViewModel()
+        public DeviceViewModel(PortManager portManager)
         {
+            _portManager = portManager;
             _deviceConnection = new ClockConnection();
             _deviceConnection.ConnectedChanged += DeviceConnection_ConnectedChanged;
 
@@ -24,10 +26,20 @@ namespace Clock4Windows.ViewModels
 
             AvailablePorts = new BindableCollection<string>();
 
-            // TODO: Enumerate available COM ports
-            AvailablePorts.Add("COM7");
-            AvailablePorts.Add("COM8");
-            AvailablePorts.Add("COM9");
+            BuildPortList();
+        }
+
+        private void BuildPortList()
+        {
+            var comPorts = _portManager.GetComPorts();
+
+            foreach (var port in comPorts)
+            {
+                AvailablePorts.Add(port);
+            }
+
+            // TODO: Listen for change notifications from the PortManager
+
         }
 
         #endregion

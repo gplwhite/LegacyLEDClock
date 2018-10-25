@@ -35,10 +35,13 @@ namespace Clock4Windows
 
             _container.Singleton<ShellViewModel>();
             _container.Singleton<ViewModelFactory>();
+            _container.Singleton<PortManager>();
 
             _container.PerRequest<ClockViewModel>();
             _container.PerRequest<DeviceViewModel>();
 
+
+            _container.GetInstance<PortManager>().Start();
 
             DisplayRootViewFor<ShellViewModel>();
         }

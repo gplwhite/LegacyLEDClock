@@ -42,6 +42,7 @@
     <Compile Include="ClockMode.cs" />
     <Compile Include="ClockState.cs" />
     <Compile Include="HardwareRenderer.cs" />
+    <Compile Include="PortManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
