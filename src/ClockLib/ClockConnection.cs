@@ -59,17 +59,28 @@ namespace ClockLib
         
         public void Stop()
         {
-            if (!Connected) return;
-
             // Signal to the rendering thread that is should stop
             _stopEvent.Set();
             _renderingThread.Join(5000);
             _renderingThread = null;
 
+            CloseConnection();
+        }
+
+
+        public bool Connected { get; private set; }
+
+        public event EventHandler<ConnectedChangedEventArgs> ConnectedChanged;
+
+
+
+
+        private void CloseConnection()
+        {
             // Close connection
             try
             {
-                _port.Close();
+                _port?.Close();
             }
             catch (Exception e)
             { }
@@ -78,11 +89,6 @@ namespace ClockLib
             _port = null;
         }
 
-
-        public bool Connected { get; private set; }
-
-        public event EventHandler<ConnectedChangedEventArgs> ConnectedChanged;
-        
         private void SetConnectionStatus(bool connected)
         {
             Connected = connected;
@@ -109,10 +115,16 @@ namespace ClockLib
                     break;
                 }
 
-                // TODO: Close the connection on error
-                _hardwareRenderer.RenderToDevice(_port);
-
-               
+                try
+                {
+                    _hardwareRenderer.RenderToDevice(_port);
+                }
+                catch (Exception e)
+                {
+                    // Close the connection on error
+                    CloseConnection();
+                    break;
+                }
             }
         }
 
