@@ -30,7 +30,7 @@ namespace Clock4Windows
 
             _container.Instance(_container);
 
-            _container.Singleton<IWindowManager, MetroWindowManager>();
+            _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
 
             _container.Singleton<ShellViewModel>();
