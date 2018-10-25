@@ -6,7 +6,8 @@ namespace ClockLib
 {
     public class ClockConnection
     {
-        private const int RenderLoopTimeout = 50;  // milliseconds
+        private const int PortTimeoutMs = 4000;
+        private const int RenderLoopTimeoutMs = 50;  // milliseconds
         
         private readonly ClockHardwareRenderer _hardwareRenderer;
 
@@ -31,7 +32,10 @@ namespace ClockLib
             if (Connected) return true;
 
             // Make a serial connection
-            _port = new SerialPort(portName, 4800, Parity.None, 8, StopBits.One);
+            _port = new SerialPort(portName, 4800, Parity.None, 8, StopBits.One)
+            {
+                WriteTimeout = PortTimeoutMs
+            };
 
             try
             {
@@ -99,7 +103,7 @@ namespace ClockLib
            
             while (true)
             {
-                if (_stopEvent.WaitOne(RenderLoopTimeout))
+                if (_stopEvent.WaitOne(RenderLoopTimeoutMs))
                 {
                     // Stop signalled - exit the loop
                     break;
