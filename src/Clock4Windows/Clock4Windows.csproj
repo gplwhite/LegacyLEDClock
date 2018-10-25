@@ -94,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ViewModelFactory.cs" />
     <Compile Include="Views\ClockView.xaml.cs">
       <DependentUpon>ClockView.xaml</DependentUpon>
     </Compile>

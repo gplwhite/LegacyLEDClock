@@ -4,6 +4,7 @@ namespace Clock4Windows.ViewModels
 {
     public class ShellViewModel : Screen
     {
+        private readonly ViewModelFactory _viewModelFactory;
 
         public IObservableCollection<ClockViewModel> Clocks { get; }
         public IObservableCollection<DeviceViewModel> Devices { get; }
@@ -20,27 +21,18 @@ namespace Clock4Windows.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
         /// </summary>
-        public ShellViewModel()
+        public ShellViewModel(ViewModelFactory viewModelFactory)
         {
+            _viewModelFactory = viewModelFactory;
+
             DisplayName = "Clock 4 Windows";
 
             Clocks = new BindableCollection<ClockViewModel>();
             Devices = new BindableCollection<DeviceViewModel>();
 
-            Clocks.Add(new ClockViewModel()
-            {
-                ClockName = "Timer 1"
-            });
-
-            Devices.Add(new DeviceViewModel
-            {
-                DeviceName = "Left Sign"
-            });
-
-            Devices.Add(new DeviceViewModel
-            {
-                DeviceName = "Right Sign"
-            });
+            AddClock();
+            AddDevice("Left Sign");
+            AddDevice("Right Sign");
         }
 
         #endregion
@@ -48,37 +40,37 @@ namespace Clock4Windows.ViewModels
 
         public void AddClock()
         {
-            Clocks.Add(new ClockViewModel()
+            Clocks.Add(_viewModelFactory.Create<ClockViewModel>(c =>
             {
-                ClockName = "Timer " + (Clocks.Count + 1)
-            });
+                c.ClockName = "Timer " + (Clocks.Count + 1);
+            }));
         }
 
         public void RemoveClock()
         {
-
+            // TODO:
         }
 
 
-        public void AddDevice()
+        public void AddDevice(string deviceName = null)
         {
-            Devices.Add(new DeviceViewModel()
+            Devices.Add(_viewModelFactory.Create<DeviceViewModel>(d =>
             {
-                DeviceName = "Device " + (Devices.Count + 1)
-            });
+                d.DeviceName = deviceName ?? "Device " + (Devices.Count + 1);
+            }));
         }
 
         public void RemoveDevice()
         {
-
+            // TODO:
         }
 
 
-  
 
-        public void AddClockToDevice(ClockViewModel clockVM)
+
+        public void AddClockToDevice(ClockViewModel clock)
         {
-            SelectedDevice?.AssignClock(clockVM);
+            SelectedDevice?.AssignClock(clock);
         }
 
 
