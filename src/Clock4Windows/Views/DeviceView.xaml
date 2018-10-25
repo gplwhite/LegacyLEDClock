@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="Clock4Windows.Views.DeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" 
+             xmlns:viewModels="clr-namespace:Clock4Windows.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="160" d:DesignWidth="400" Margin="5, 5, 5, 5">
+
+    
+    <StackPanel>
+
+        <TextBox x:Name="DeviceName" Style="{StaticResource NameTextBox}" Controls:TextBoxHelper.SelectAllOnFocus="True" />
+        <Border Height="1" Background="{DynamicResource AccentColorBrush}" />
+
+        <StackPanel Orientation="Horizontal" Margin="0, 10">
+            <Label>Timer</Label>
+            <TextBlock x:Name="ClockName" VerticalAlignment="Center"></TextBlock>            
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0, 10">
+
+            <ComboBox x:Name="AvailablePorts" SelectedItem="{Binding PortName}" Width="80">
+                <ComboBox.Style>
+                    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.NotAttempted}">
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Disconnected}">
+                                <Setter Property="IsEnabled" Value="True" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Button x:Name="ConnectOrDisconnect" Margin="20, 0" Padding="8, 5, 12, 5">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="18" Height="18" Margin="0, 0, 5, 0">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource appbar_connect}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Text" Value="Connect" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Connected}">
+                                        <Setter Property="Text" Value="Disconnect" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>                       
+
+                        <!--<TextBlock.Text>Connect</TextBlock.Text>-->
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="18" Height="18" Fill="Green" Margin="0, 0, 5, 0">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{StaticResource appbar_check}" Stretch="Fill" />
+                    </Rectangle.OpacityMask>
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Connected}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <Rectangle Width="18" Height="18" Fill="Red" Margin="0, 0, 5, 0">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{StaticResource appbar_close}" Stretch="Fill" />
+                    </Rectangle.OpacityMask>
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Disconnected}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+                <TextBlock VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Text" Value="{Binding Status}" />
+                            <Setter Property="Foreground" Value="Black" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.NotAttempted}">
+                                    <Setter Property="Text" Value="" />
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Connected}">
+                                    <Setter Property="Foreground" Value="Green" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="{x:Static viewModels:DeviceStatus.Disconnected}">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

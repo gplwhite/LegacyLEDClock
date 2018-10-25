@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls">
+
+
+    <SolidColorBrush x:Key="EmptyBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="GrayBrush" Color="LightGray" />
+
+    <Style x:Key="NameTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MetroTextBox}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="BorderBrush" Value="{StaticResource EmptyBrush}" />
+        <Setter Property="Controls:ControlsHelper.FocusBorderBrush" Value="{StaticResource EmptyBrush}" />
+        <Setter Property="Controls:ControlsHelper.MouseOverBorderBrush" Value="{StaticResource GrayBrush}" />
+    </Style>
+
+
+
+</ResourceDictionary>
