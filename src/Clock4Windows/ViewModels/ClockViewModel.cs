@@ -210,6 +210,11 @@ namespace Clock4Windows.ViewModels
         {
             bool isFormatted;
 
+            var now = DateTime.Now;
+            var nowTime = now.TimeOfDay;
+            var epoch = DateTime.Now;
+
+
             switch (ClockMode)
             {
                 case ClockMode.Standby:
@@ -228,14 +233,12 @@ namespace Clock4Windows.ViewModels
                 case ClockMode.CountUpFormatted:
                     isFormatted = ClockMode == ClockMode.CountUpFormatted;
 
-                    // TODO: Parse Options
-                    var now = DateTime.Now;
-                    var nowTime = now.TimeOfDay;
-                    var epoch = DateTime.Now;
-
+                    // Parse Options
+                    
                     if (EpochMode == EpochMode.Now)
+                    {
                         epoch = now;
-
+                    }
                     else if (EpochMode == EpochMode.AbsoluteTime)
                     {
                         // If its in the past, then it must be tomorrow 
@@ -263,9 +266,31 @@ namespace Clock4Windows.ViewModels
 
                     isFormatted = ClockMode == ClockMode.CountDownFormatted;
 
-                    // TODO: Parse Options
+                    // Parse Options
+                   
+                    if (EpochMode == EpochMode.Now)
+                    {
+                        epoch = now;
+                    }
+                    else if (EpochMode == EpochMode.AbsoluteTime)
+                    {
+                        // If its in the future, then it must be tomorrow 
+                        if (AbsoluteTimeSpan < nowTime)
+                        {
+                            now = now.AddDays(1);
+                        }
 
-                    Clock.SetCountDownMode(DateTime.Now.AddMinutes(12), formatted: isFormatted);
+                        epoch = new DateTime(now.Year, now.Month, now.Day, AbsoluteTimeSpan.Hours, AbsoluteTimeSpan.Minutes, AbsoluteTimeSpan.Seconds);
+                    }
+                    else if (EpochMode == EpochMode.RelativeTime)
+                    {
+                        epoch = now
+                            .AddHours(RelativeTimeSpan.Hours)
+                            .AddMinutes(RelativeTimeSpan.Minutes)
+                            .AddSeconds(RelativeTimeSpan.Seconds);
+                    }
+                    
+                    Clock.SetCountDownMode(epoch, formatted: isFormatted);
                     break;
             }
 
